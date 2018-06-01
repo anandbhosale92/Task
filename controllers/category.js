@@ -9,7 +9,6 @@ module.exports = {
       response.type = 'S';
       const resp = await category.getAllCategory();
       if (resp) {
-        // const response = { msg: "Category added successfully", categoryId: resp.insertedIds[0] };
         response.result = resp;
         sendResp.sendResponse(response);
         return;

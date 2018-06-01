@@ -36,12 +36,12 @@ module.exports = {
     if (result.length <= 0) {
       throw 2;
     }
-    const tree = {_id:null};
+    const defaultValue = {_id:null};
     /**
      *CHECK FOR CATEGORIES WHICH HAS PARENTID = NULL
      * THEN CHECK THOSE PARENT CATEGORY HAS ANY CHILD IF YES THEN ADD THAT CATEGORY UNDER CHILD KEY
     */
-    addChildrenToNode(tree, result);
+    addChildrenToCategory(defaultValue, result);
 
     //FILTERED OUT ONLY SHOW PARENT CATEGORY
     result = result.filter(function (categories) {
@@ -53,22 +53,27 @@ module.exports = {
   }
 };
 
-const addChildrenToNode = function (node, result) {
-  let currentNodeId = node._id;
-  node.child_categories = [];
+/**
+ * FUNCTION TO ADD CHILD CATEGORY UNDER PARENT CATEGORY
+ * @param {*} categories - Categories initially will be blank
+ * @param {*} result     - All category result which needs to be formatted
+ */
+const addChildrenToCategory = function (categories, result) {
+  let currentCatId = categories._id;
+  categories.child_categories = [];
 
   result.forEach(function (e) {
     delete e.ancestors;
 
-    e.parent      = e.parent ? e.parent.toString() : e.parent;
-    currentNodeId = currentNodeId ? currentNodeId.toString() : currentNodeId;
+    e.parent     = e.parent ? e.parent.toString() : e.parent;
+    currentCatId = currentCatId ? currentCatId.toString() : currentCatId;
 
-      if(e.parent === currentNodeId){
-        e = addChildrenToNode(e, result);
-        node.child_categories.push(e);
-      }
+    if(e.parent === currentCatId){
+      e = addChildrenToCategory(e, result);
+      categories.child_categories.push(e);
+    }
   });
 
-  return node;
+  return categories;
 };
 

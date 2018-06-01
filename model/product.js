@@ -30,6 +30,7 @@ module.exports = {
     //ALL SET NOW GET ALL PRODUCT FROM FILTERED CATEGORIES
     const productQuery    = {};
     productQuery.category = { $in: searchProductCategory };
+
     const projection = {
       _id: 1, name: 1, price: 1, description: 1
     };
@@ -58,7 +59,7 @@ module.exports = {
 
   async addProduct(data) {
 
-    //CHECK FOR CATEGORY PASSED ISEXISTS IN OUT SYSTEM
+    //CHECK FOR CATEGORY PASSED ISEXISTS IN OUR SYSTEM
     const checkQuery = { _id: { $in: data.category } };
     const categories = await mongoClient.collection(categoryDB).find(checkQuery).toArray();
 
